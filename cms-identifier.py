@@ -66,14 +66,17 @@ def printf(lista):
 
 
 def main():
+      targets = []
       proc    = int( sys.argv[1]  )
       start_time = time.time()
       result = {'joomla': [], 'wordpress': []}
       p = Pool(proc) 
-      q = Pool(proc)
-      f = open("file.txt")
-      lines = f.readlines()
-      all = p.map(search_for, lines)
+      with open('file.txt','r') as f:
+          lines = f.readlines()
+          for line in lines:
+              url = str(line.replace('\n',''))
+              targets.append(url)
+      all = p.map(search_for, targets)
       for p in all:
          if p.get("joomla") != []:
             result["joomla"].append(p.get("joomla"))
